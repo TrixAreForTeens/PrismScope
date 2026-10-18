@@ -1,0 +1,32 @@
+
+name: Build Windows VST3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Compile VST3
+        run: cmake --build build --config Release --target PrismScope_VST3 --parallel 4
+
+      - name: Package VST3
+        shell: pwsh
+        run: |
+          $plugin = Get-ChildItem -Path build -Recurse -Directory -Filter 'PrismScope.vst3' | Where-Object { $_.FullName -like '*artefacts*' } | Select-Object -First 1
+          if (-not $plugin) { throw 'VST3 bundle not found' }
+          Compress-Archive -Path $plugin.FullName -DestinationPath PrismScope-Windows-VST3.zip -Force
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PrismScope-Windows-VST3
+          path: PrismScope-Windows-VST3.zip
