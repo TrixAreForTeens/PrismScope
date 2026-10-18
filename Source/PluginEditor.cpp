@@ -69,7 +69,7 @@ void PrismScopeEditor::resized()
 void PrismScopeEditor::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colour(0xff0a1015));
-    const auto area = getLocalBounds().reduced(18).withTrimmedTop(40).withTrimmedBottom(110);
+    auto area = getLocalBounds().reduced(18).withTrimmedTop(40).withTrimmedBottom(110);
     g.setColour(juce::Colour(0xff13212a)); g.fillRoundedRectangle(area.toFloat(), 9.0f);
     const float h = static_cast<float>(area.getHeight()), w = static_cast<float>(area.getWidth());
     const float sensitivityValue = processor.parameters.getRawParameterValue("gain")->load();
