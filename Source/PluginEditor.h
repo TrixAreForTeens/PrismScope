@@ -17,6 +17,14 @@ private:
     float audioEnvelope = 0.0f, phase = 0.0f;
     juce::Image renderWarpedImage() const;
     juce::ComboBox mode;
+    juce::ToggleButton particlesOn {"PARTICLES"}, ribbonsOn {"RIBBONS"}, ringsOn {"RINGS"}, scopeOn {"SCOPE"}, spectrumOn {"SPECTRUM"}, imageOn {"IMAGE"};
+    juce::Slider particleCount, particleMotion, ribbonDensity, ringComplexity, backgroundLevel, glitchAmount;
+    juce::Label particleCountLabel, particleMotionLabel, ribbonDensityLabel, ringComplexityLabel, backgroundLabel, glitchLabel;
+    juce::Viewport controlViewport;
+    juce::Component controlPanel;
+    float bassEnergy = 0.0f, highEnergy = 0.0f;
+    void drawGenerators(juce::Graphics&, juce::Rectangle<int>);
+
     juce::TextButton imageButton {"Import PNG"}, screenshotButton {"Save PNG"};
     juce::Label title;
     juce::Image imported;
