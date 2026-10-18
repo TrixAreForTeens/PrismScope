@@ -20,6 +20,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout PrismScopeProcessor::createL
     param("imageOpacity", "Image Opacity", 0.0f, 1.0f, 0.9f);
     param("imageSize", "Image Size", 0.2f, 1.8f, 1.0f);
     param("spectrumScale", "Spectrum Height", 0.1f, 2.0f, 1.0f);
+    param("particleCount", "Particle Density", 0.0f, 1.0f, 0.55f);
+    param("particleMotion", "Particle Turbulence", 0.0f, 2.0f, 0.8f);
+    param("ribbonDensity", "Ribbon Density", 0.0f, 1.0f, 0.5f);
+    param("ringComplexity", "Ring Complexity", 0.0f, 1.0f, 0.5f);
+    param("backgroundLevel", "Background Brightness", 0.0f, 1.0f, 0.0f);
+    param("glitchAmount", "Glitch Displacement", 0.0f, 1.0f, 0.0f);
     return {p.begin(), p.end()};
 }
 PrismScopeProcessor::PrismScopeProcessor() : AudioProcessor(BusesProperties().withInput("Input", juce::AudioChannelSet::stereo(), true).withOutput("Output", juce::AudioChannelSet::stereo(), true)), parameters(*this, nullptr, "PARAMETERS", createLayout()) {}
