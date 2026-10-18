@@ -24,8 +24,9 @@ PrismScopeEditor::PrismScopeEditor(PrismScopeProcessor& p) : AudioProcessorEdito
     screenshotButton.onClick = [this]
     {
         chooser = std::make_unique<juce::FileChooser>("Save visualizer screenshot", juce::File::getSpecialLocation(juce::File::userDocumentsDirectory).getChildFile("PrismScope.png"), "*.png");
+        juce::Component::SafePointer<PrismScopeEditor> safe(this);
         chooser->launchAsync(juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::canSelectFiles,
-            [safe = juce::Component::SafePointer<PrismScopeEditor>(this)](const juce::FileChooser& fc)
+            [safe](const juce::FileChooser& fc)
             {
                 if (safe == nullptr) return;
                 auto file = fc.getResult();
@@ -44,8 +45,9 @@ PrismScopeEditor::PrismScopeEditor(PrismScopeProcessor& p) : AudioProcessorEdito
 void PrismScopeEditor::chooseImage()
 {
     chooser = std::make_unique<juce::FileChooser>("Select PNG overlay", juce::File{}, "*.png");
+    juce::Component::SafePointer<PrismScopeEditor> safe(this);
     chooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
-        [safe = juce::Component::SafePointer<PrismScopeEditor>(this)](const juce::FileChooser& fc)
+        [safe](const juce::FileChooser& fc)
         {
             if (safe == nullptr) return;
             const auto file = fc.getResult();
