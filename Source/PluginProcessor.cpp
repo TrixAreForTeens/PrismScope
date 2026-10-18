@@ -7,8 +7,19 @@ juce::AudioProcessorValueTreeState::ParameterLayout PrismScopeProcessor::createL
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> p;
     p.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"gain", 1}, "Visual Sensitivity", juce::NormalisableRange<float>(0.1f, 8.0f, 0.01f), 1.0f));
     p.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"decay", 1}, "Spectrum Decay", juce::NormalisableRange<float>(0.0f, 0.99f, 0.01f), 0.75f));
-    p.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"mode", 1}, "Visualizer", juce::StringArray{"Spectrum", "Oscilloscope", "Hybrid"}, 2));
+    p.push_back(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"mode", 1}, "Visualizer", juce::StringArray{"Spectrum", "Oscilloscope", "Hybrid", "Radial"}, 2));
     p.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"hue", 1}, "Hue", 0, 359, 185));
+    auto param = [&p](const char* id, const char* name, float min, float max, float def) {
+        p.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id, 1}, name, juce::NormalisableRange<float>(min, max, 0.01f), def));
+    };
+    param("imagePulse", "Image Pulse", 0.0f, 2.0f, 0.7f);
+    param("imageWarp", "Image Warp", 0.0f, 1.0f, 0.45f);
+    param("imageSpin", "Image Spin", 0.0f, 2.0f, 0.2f);
+    param("glow", "Glow", 0.0f, 1.0f, 0.5f);
+    param("crt", "CRT Scanlines", 0.0f, 1.0f, 0.15f);
+    param("imageOpacity", "Image Opacity", 0.0f, 1.0f, 0.9f);
+    param("imageSize", "Image Size", 0.2f, 1.8f, 1.0f);
+    param("spectrumScale", "Spectrum Height", 0.1f, 2.0f, 1.0f);
     return {p.begin(), p.end()};
 }
 PrismScopeProcessor::PrismScopeProcessor() : AudioProcessor(BusesProperties().withInput("Input", juce::AudioChannelSet::stereo(), true).withOutput("Output", juce::AudioChannelSet::stereo(), true)), parameters(*this, nullptr, "PARAMETERS", createLayout()) {}
